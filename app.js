@@ -1,0 +1,35 @@
+const express = require("express");
+const cors = require("cors");
+const createError = require("http-errors");
+const { errorResponse } = require("./response/response");
+const heroRoute = require("./routes/heroRout");
+const aboutRoute = require("./routes/aboutRoute");
+const technologiRoute = require("./routes/technologiesLoveRout");
+const projectRoute = require("./routes/projectRoute");
+const app = express();
+
+// middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use("/api/v1/hero", heroRoute);
+app.use("/api/v1/about", aboutRoute);
+app.use("/api/v1/technology", technologiRoute);
+app.use("/api/v1/project", projectRoute);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.use((req, res, next) => {
+  next(createError(404, "route not exist"));
+});
+
+app.use((error, req, res, next) => {
+  errorResponse(res, {
+    statusCode: error.statusCode,
+    message: error.message,
+  });
+});
+
+module.exports = app;
