@@ -21,7 +21,7 @@ exports.getTechnologi = async (req, res, next) => {
 
 exports.postTechnologi = async (req, res, next) => {
   try {
-    console.log("hello shishir ");
+
     const { name, description } = req.body;
     console.log(name, description);
     const file = req.file;

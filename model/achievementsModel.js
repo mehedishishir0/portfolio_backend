@@ -1,36 +1,21 @@
 const mongoose = require("mongoose");
 
 const achievementsSchema = new mongoose.Schema({
-  projectComplited: {
-    type: Number,
-    default: 0,
-  },
-  yearsExperience: {
-    type: Number,
-    default: 0,
-  },
-  cupsOfCoffee: {
-    type: Number,
-    default: 0,
-  },
-  happyClients: {
-    type: Number,
-    default: 0,
-  },
-  satisfactionRate: {
-    type: Number,
-    default: 0,
-  },
-  technologiesUsed: {
-    type: Number,
-    default: 0,
-  },
-  contributions: {
-    type: Number,
-    default: 0,
+  title: { type: String, required: true },      // e.g. "Projects Delivered"
+  value: { type: String, required: true },      // e.g. "60+"
+  percentage: { type: Number, default: null },  // optional
+  image: {
+    public_id: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
   },
 });
 
-const Achievements = mongoose.model("Achievements", achievementsSchema);
+const AchievementsModel = mongoose.model("Achievements", achievementsSchema);
 
-module.exports = Achievements;
+module.exports = AchievementsModel;
