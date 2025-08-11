@@ -19,6 +19,6 @@ const timelineSchema = new mongoose.Schema({
     }
 });
 
-const Timeline = mongoose.model("Timeline", timelineSchema);
+const TimelineModel = mongoose.model("Timeline", timelineSchema);
 
-module.exports = Timeline;
+module.exports = TimelineModel;
