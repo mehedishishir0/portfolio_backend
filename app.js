@@ -10,6 +10,7 @@ const achievmentsRoute = require("./routes/achievementsRoute");
 const timelineRoute = require("./routes/timelineRoute");
 const stackGaleryRoute = require("./routes/stackGalleryRoute");
 const contactUsRoute = require("./routes/contactusRout");
+const authRoute = require("./routes/authRoute");
 const app = express();
 
 // middleware
@@ -24,6 +25,7 @@ app.use("/api/v1/achievment", achievmentsRoute);
 app.use("/api/v1/timeline", timelineRoute);
 app.use("/api/v1/stackgalery", stackGaleryRoute);
 app.use("/api/v1/contactus", contactUsRoute);
+app.use("/api/v1/auth", authRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
