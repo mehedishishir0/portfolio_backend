@@ -6,6 +6,7 @@ const heroRoute = require("./routes/heroRout");
 const aboutRoute = require("./routes/aboutRoute");
 const technologiRoute = require("./routes/technologiesLoveRout");
 const projectRoute = require("./routes/projectRoute");
+const achievmentsRoute = require("./routes/achievementsRoute");
 const app = express();
 
 // middleware
@@ -16,6 +17,9 @@ app.use("/api/v1/hero", heroRoute);
 app.use("/api/v1/about", aboutRoute);
 app.use("/api/v1/technology", technologiRoute);
 app.use("/api/v1/project", projectRoute);
+app.use("/api/v1/achievment", achievmentsRoute);
+
+
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
