@@ -46,6 +46,7 @@ exports.loginUser = async (req, res, next) => {
     if (!findUser) {
       throw createError(404, "somthing want wrong");
     }
+
     const isMatch = await bcryptjs.compare(password, findUser.password);
     if (!isMatch) {
       throw createError(401, "Email or Password are incorrect ");
@@ -61,7 +62,11 @@ exports.loginUser = async (req, res, next) => {
       sameSite: "None",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    successResponse(res, { statusCode: 200, message: "Login successfully" });
+    successResponse(res, {
+      statusCode: 200,
+      message: "Login successfully",
+      data: findUser,
+    });
   } catch (error) {
     next(error);
   }
@@ -89,7 +94,7 @@ exports.forgotPassword = async (req, res, next) => {
     await user.save();
     console.log(process.env.CLIENT_URL);
     const resteUrl = `${process.env.CLIENT_URL}/reset-password?${restToken}`;
-    console.log(resteUrl);
+
     // sendmail
 
     await sendEmailByresetPassword({
