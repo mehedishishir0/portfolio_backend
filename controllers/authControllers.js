@@ -13,7 +13,7 @@ exports.registereUser = async (req, res, next) => {
       throw createError(404, "all filad are required");
     }
     const existingUser = await AuthModel.findOne({ email });
-    console.log(existingUser)
+    console.log(existingUser);
 
     if (existingUser) {
       throw createError(409, "email alrady exist");
@@ -40,7 +40,9 @@ exports.loginUser = async (req, res, next) => {
     if (!email || !password) {
       throw createError(404, "all faild are required");
     }
+
     const findUser = await AuthModel.findOne({ email });
+
     if (!findUser) {
       throw createError(404, "somthing want wrong");
     }
@@ -48,8 +50,11 @@ exports.loginUser = async (req, res, next) => {
     if (!isMatch) {
       throw createError(401, "Email or Password are incorrect ");
     }
-    const userId = findUser._id;
-    const token = createToken({ userId }, process.env.JWT_SECRET, "30days");
+    const token = createToken(
+      { userId: findUser._id, role: findUser.role },
+      process.env.JWT_SECRET,
+      "30days"
+    );
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV == "production",
@@ -68,64 +73,68 @@ exports.forgotPassword = async (req, res, next) => {
     if (!email) {
       throw createError(400, "email are required");
     }
-    const user = await AuthModel.findOne({ email })
+    const user = await AuthModel.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    //  generate reset jey  
+    //  generate reset jey
     const restToken = crypto.randomBytes(32).toString("hex");
-    const hasedToken = crypto.createHash("sha256").update(restToken).digest("hex")
+    const hasedToken = crypto
+      .createHash("sha256")
+      .update(restToken)
+      .digest("hex");
 
     //save to user
     user.resetPasswordToken = hasedToken;
-    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000 // 15mn
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15mn
     await user.save();
+    console.log(process.env.CLIENT_URL);
     const resteUrl = `${process.env.CLIENT_URL}/reset-password?${restToken}`;
-    console.log(resteUrl)
+    console.log(resteUrl);
     // sendmail
 
     await sendEmailByresetPassword({
       to: user.email,
       subject: "Password Reset Request",
-      resetUrl: resteUrl
+      resetUrl: resteUrl,
     });
-    successResponse(res, { statusCode: 200, message: "Password reset link sent to your email" })
+    successResponse(res, {
+      statusCode: 200,
+      message: "Password reset link sent to your email",
+    });
   } catch (error) {
-    next(error)
-
+    next(error);
   }
-}
-
+};
 
 exports.resetPassword = async (req, res, next) => {
   try {
     const { token, password } = req.body;
     if (!token || !password) {
-      throw createError(404, "token and password are required")
+      throw createError(404, "token and password are required");
     }
     const hasedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await AuthModel.findOne({
       resetPasswordToken: hasedToken,
-      resetPasswordExpire: { $gt: Date.now() }
-    })
+      resetPasswordExpire: { $gt: Date.now() },
+    });
     if (!user) {
-      throw createError(400, "Invalid or expired token")
+      throw createError(400, "Invalid or expired token");
     }
 
     const hasedPassword = await bcryptjs.hash(password, 10);
-    user.password = hasedPassword
+    user.password = hasedPassword;
 
-    user.resetPasswordExpire = undefined
-    user.resetPasswordToken = undefined
+    user.resetPasswordExpire = undefined;
+    user.resetPasswordToken = undefined;
 
-    await user.save()
+    await user.save();
 
     successResponse(res, {
       statusCode: 200,
-      message: "Password reset successfylly"
-    })
-
+      message: "Password reset successfylly",
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
