@@ -55,4 +55,48 @@ const sendEmail = async (emailData) => {
   }
 };
 
-module.exports = sendEmail;
+const sendEmailByresetPassword = async (emailData) => {
+  try {
+    const mailOptions = {
+      from: process.env.SMTP_USERNAME,
+      to: emailData.to,
+      subject: emailData.subject,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+          <h2 style="color: #2a7de1;">Password Reset Request</h2>
+          <p>Hello,</p>
+          <p>You recently requested to reset your password. Click the button below to reset it:</p>
+
+          <a href="${emailData.resetUrl}" 
+             style="
+               display: inline-block;
+               padding: 12px 24px;
+               margin: 20px 0;
+               font-size: 16px;
+               color: #ffffff;
+               background-color: #2a7de1;
+               text-decoration: none;
+               border-radius: 5px;
+             ">
+            Reset My Password
+          </a>
+
+          <p>If the button doesn’t work, copy and paste the following link into your browser:</p>
+          <p style="word-break: break-all;">
+            <a href="${emailData.resetUrl}" style="color: #2a7de1;">${emailData.resetUrl}</a>
+          </p>
+
+          <p>If you didn’t request this, please ignore this email.</p>
+          <p>Thanks,<br>Your Company Team</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+module.exports = {sendEmailByresetPassword,sendEmail};

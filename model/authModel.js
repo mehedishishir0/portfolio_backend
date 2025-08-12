@@ -13,6 +13,8 @@ const authSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  resetPasswordToken: String,
+  resetPasswordExpire: Date
 });
 
 const AuthModel = mongoose.model("auth", authSchema);
