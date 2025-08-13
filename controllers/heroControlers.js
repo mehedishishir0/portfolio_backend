@@ -21,7 +21,7 @@ exports.getHero = async (req, res, next) => {
 exports.postHero = async (req, res, next) => {
   try {
     const { title, description } = req.body;
-
+    console.log(title, description)
     if ((!title, !description)) {
       throw createError(404, "title and description are required");
     }

@@ -58,9 +58,10 @@ exports.loginUser = async (req, res, next) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV == "production",
-      sameSite: "None",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      secure: false,         // ok for localhost
+      sameSite: "lax",       // works without https
+      path: "/",
+      maxAge: 30 * 24 * 60 * 60 * 1000
     });
     successResponse(res, {
       statusCode: 200,
@@ -87,14 +88,14 @@ exports.forgotPassword = async (req, res, next) => {
       .createHash("sha256")
       .update(restToken)
       .digest("hex");
-
+    console.log(restToken)
     //save to user
     user.resetPasswordToken = hasedToken;
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15mn
     await user.save();
-    console.log(process.env.CLIENT_URL);
-    const resteUrl = `${process.env.CLIENT_URL}/reset-password?${restToken}`;
 
+    const resteUrl = `${process.env.CLIENT_URL}/reset-password?${restToken}`;
+    console.log(resteUrl)
     // sendmail
 
     await sendEmailByresetPassword({
@@ -102,6 +103,7 @@ exports.forgotPassword = async (req, res, next) => {
       subject: "Password Reset Request",
       resetUrl: resteUrl,
     });
+
     successResponse(res, {
       statusCode: 200,
       message: "Password reset link sent to your email",

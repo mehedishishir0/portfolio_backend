@@ -94,6 +94,7 @@ const sendEmailByresetPassword = async (emailData) => {
 
     await transporter.sendMail(mailOptions);
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };
