@@ -22,7 +22,7 @@ exports.getAbout = async (req, res, next) => {
 exports.postAbout = async (req, res, next) => {
   try {
     const { title, description } = req.body;
-
+    console.log(title, description);
     const file = req.file;
 
     if (!title || !description || !file) {

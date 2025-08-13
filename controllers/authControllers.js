@@ -56,17 +56,13 @@ exports.loginUser = async (req, res, next) => {
       process.env.JWT_SECRET,
       "30days"
     );
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,         // ok for localhost
-      sameSite: "lax",       // works without https
-      path: "/",
-      maxAge: 30 * 24 * 60 * 60 * 1000
-    });
+    const userData = findUser.toObject();
+    delete userData.password;
+
     successResponse(res, {
       statusCode: 200,
       message: "Login successfully",
-      data: findUser,
+      data: { data: userData, accessToken: token },
     });
   } catch (error) {
     next(error);
@@ -88,14 +84,14 @@ exports.forgotPassword = async (req, res, next) => {
       .createHash("sha256")
       .update(restToken)
       .digest("hex");
-    console.log(restToken)
+    console.log(restToken);
     //save to user
     user.resetPasswordToken = hasedToken;
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15mn
     await user.save();
 
     const resteUrl = `${process.env.CLIENT_URL}/reset-password?${restToken}`;
-    console.log(resteUrl)
+    console.log(resteUrl);
     // sendmail
 
     await sendEmailByresetPassword({
