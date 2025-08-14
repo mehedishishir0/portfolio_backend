@@ -56,13 +56,21 @@ exports.loginUser = async (req, res, next) => {
       process.env.JWT_SECRET,
       "30days"
     );
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: false,         // ok for localhost
+    //   sameSite: "lax",       // works without https
+    //   path: "/",
+    //   maxAge: 30 * 24 * 60 * 60 * 1000
+    // });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,         // ok for localhost
-      sameSite: "lax",       // works without https
+      secure: false, // true in production (https)
+      sameSite: "None", // must be None for cross-origin
       path: "/",
       maxAge: 30 * 24 * 60 * 60 * 1000
     });
+
     successResponse(res, {
       statusCode: 200,
       message: "Login successfully",
