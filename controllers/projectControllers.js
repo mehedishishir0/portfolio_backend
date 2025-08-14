@@ -106,7 +106,7 @@ exports.updateProject = async (req, res, next) => {
     }
 
     // Image handling
-    let imageData = existingProject.image; // Default to existing images
+    let imageData = existingProject.image; 
     if (files && files.length > 0) {
       // Delete old images from Cloudinary
       await Promise.all(
