@@ -32,6 +32,7 @@ const createError = require("http-errors");
 
 exports.protected = async (req, res, next) => {
   try {
+
     // Get token from Authorization header
     const authHeader = req.headers["authorization"];
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -42,7 +43,6 @@ exports.protected = async (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded token:", decoded);
 
     // Check admin role
     if (decoded.role !== "admin") {
