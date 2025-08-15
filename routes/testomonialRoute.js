@@ -16,3 +16,5 @@ testomonialRoute.put(
   updateTestomonial
 );
 testomonialRoute.delete("/:id", protected, deleteTestomonial);
+
+module.exports = testomonialRoute
