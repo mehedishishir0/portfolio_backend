@@ -21,7 +21,9 @@ exports.getStackGallery = async (req, res, next) => {
 
 exports.postStackGallery = async (req, res, next) => {
   try {
+    console.log(req.body)
     const { title } = req.body;
+    console.log(title)
     const file = req.file;
     if (!title || !file) {
       throw createError(404, "all field are required");
@@ -70,9 +72,11 @@ exports.updateStackGallery = async (req, res, next) => {
           folder: "shishir/stackgallery",
         }),
       ]);
+
       if (distoryresult.result !== "ok") {
         throw createError(400, "faild to delete image on cloudinary");
       }
+
       if (!uploadResult.secure_url) {
         throw createError(400, "faild to upload image on cloudinary");
       }

@@ -32,6 +32,7 @@ const createError = require("http-errors");
 
 exports.protected = async (req, res, next) => {
   try {
+
     // Get token from Authorization header
     const authHeader = req.headers["authorization"];
     if (!authHeader || !authHeader.startsWith("Bearer ")) {

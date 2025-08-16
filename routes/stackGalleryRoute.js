@@ -7,7 +7,6 @@ const {
 const { protected } = require("../middlewares/authMiddilewares");
 const upload = require("../uploder/imageUploder");
 const stackGaleryRoute = require("express").Router();
-
 stackGaleryRoute.get("/", getStackGallery);
 stackGaleryRoute.post("/", protected, upload.single("image"), postStackGallery);
 stackGaleryRoute.put(

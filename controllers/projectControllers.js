@@ -19,6 +19,26 @@ exports.getProject = async (req, res, next) => {
   }
 };
 
+
+exports.getSingelProject = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const response = await Project.findById(id);
+    if (!response) {
+      throw createError(404, "project not found");
+    }
+    successResponse(res, {
+      statusCode: 200,
+      message: "project fetch successfully",
+      data: response,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
 exports.postProject = async (req, res, next) => {
   try {
     const { title, description, technologies, githubLink, liveLink } = req.body;
@@ -106,7 +126,7 @@ exports.updateProject = async (req, res, next) => {
     }
 
     // Image handling
-    let imageData = existingProject.image; 
+    let imageData = existingProject.image;
     if (files && files.length > 0) {
       // Delete old images from Cloudinary
       await Promise.all(
