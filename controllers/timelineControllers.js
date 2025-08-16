@@ -20,7 +20,10 @@ exports.getTimelin = async (req, res, next) => {
 
 exports.postTimeline = async (req, res, next) => {
   try {
+    console.log(req.body)
     const { date, title, subTitle, content } = req.body;
+    console.log(date),
+    console.log(req.body)
     if (!date || !title || !subTitle || !content) {
       throw createError(404, "all field are required");
     }

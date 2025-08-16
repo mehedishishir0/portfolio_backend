@@ -1,14 +1,15 @@
 const createError = require("http-errors");
 const { successResponse } = require("../response/response");
-const sendEmail = require("../config/mail");
+const { sendEmail } = require("../config/mail");
 
 exports.postContactus = async (req, res, next) => {
   try {
+    console.log(req.body)
     const { name, email, subject, message } = req.body;
     if (!name || !email || !subject || !message) {
       throw createError(404, "all faild are required");
     }
-    const response = await sendEmail({
+     await sendEmail({
       to: "mehedihasanshishir.info@gmail.com",
       subject: `Contact Form: ${subject}`,
       name,

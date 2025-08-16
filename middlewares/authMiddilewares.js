@@ -43,6 +43,7 @@ exports.protected = async (req, res, next) => {
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+   
 
     // Check admin role
     if (decoded.role !== "admin") {
