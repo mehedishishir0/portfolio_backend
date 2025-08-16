@@ -19,9 +19,10 @@ const testomonialRoute = require("./routes/testomonialRoute");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: ["http://localhost:3000","http://localhost:3001","http://localhost:3002","https://mhshishir.vercel.app"],
+  origin: ["http://localhost:3000","http://localhost:3001","http://localhost:3002","https://mhshishir.vercel.app","https://adminmhshishir.vercel.app"],
   credentials: true,
 }));
+
 app.use(cookieParser());
 
 app.use("/api/v1/hero", heroRoute);
