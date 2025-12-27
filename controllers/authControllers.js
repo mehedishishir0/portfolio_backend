@@ -84,14 +84,13 @@ exports.forgotPassword = async (req, res, next) => {
       .createHash("sha256")
       .update(restToken)
       .digest("hex");
-    console.log(restToken);
     //save to user
     user.resetPasswordToken = hasedToken;
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15mn
     await user.save();
 
     const resteUrl = `${process.env.CLIENT_URL}/reset-password?${restToken}`;
-    console.log(resteUrl);
+ 
     // sendmail
 
     await sendEmailByresetPassword({
