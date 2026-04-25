@@ -14,6 +14,7 @@ const authRoute = require("./routes/authRoute");
 const app = express();
 const cookieParser = require("cookie-parser");
 const testomonialRoute = require("./routes/testomonialRoute");
+const blogRoute = require("./routes/blogRoute");
 
 // middleware
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use("/api/v1/stackgalery", stackGaleryRoute);
 app.use("/api/v1/contactus", contactUsRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/testomonial", testomonialRoute);
+app.use("/api/v1/blogs", blogRoute)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
