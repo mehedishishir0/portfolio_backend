@@ -19,6 +19,23 @@ const authSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
+  twoFactorEnabled: {
+    type: Boolean,
+    default: false,
+  },
+  twoFactorSecret: {
+    type: String,
+    default: null,
+  },
+  twoFactorRecoveryCodes: [
+    {
+      code: String,
+      used: {
+        type: Boolean,
+        default: false,
+      },
+    },
+  ],
 });
 
 const AuthModel = mongoose.model("auth", authSchema);
